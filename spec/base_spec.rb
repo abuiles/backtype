@@ -1,9 +1,17 @@
 require 'spec_helper'
 
 describe Backtype::Base do
-  API_METHODS = [:comments_search, :comments_by_author_url, :connect, :connect_stats, :post_comments,
-                 :post_stats, :tweetcount, :user_influencer_score,
-                 :user_top_sites, :user_influenced_by, :user_influencer_of]
+  API_METHODS = [:comments_by_author_url,
+                 :comments_by_page,
+                 :comments_search,
+                 :comments_stats_by_page,
+                 :connect,
+                 :connect_stats,
+                 :stats_by_url,
+                 :user_influencer_score,
+                 :user_influenced_by,
+                 :user_influencer_of,
+                 :user_top_sites]
 
   API_METHODS.each do |method|
     it "should define #{method}" do
@@ -57,38 +65,38 @@ describe Backtype::Base do
         end
       end
 
-      describe "#post_comments" do
+      describe "#comments_by_page" do
         it "should call post/comments with the given params" do
           @backtype.should_receive(:make_request).with("post/comments", :url => @url)
-          @backtype.post_comments :url => @url
+          @backtype.comments_by_page :url => @url
         end
 
         it "should raise MissingParameters when the required parameters are not given" do
-          lambda { @backtype.post_comments }.should raise_error(Backtype::MissingParameters, "You must specified :url in the parameters")
+          lambda { @backtype.comments_by_page }.should raise_error(Backtype::MissingParameters, "You must specified :url in the parameters")
         end
       end
 
-      describe "#post_stats" do
+      describe "#comments_stats_by_page" do
         it "should call post/stats with the given params" do
           @backtype.should_receive(:make_request).with("post/stats", :url => @url)
-          @backtype.post_stats :url => @url
+          @backtype.comments_stats_by_page :url => @url
         end
 
         it "should raise MissingParameters when the required parameters are not given" do
-          lambda { @backtype.post_stats }.should raise_error(Backtype::MissingParameters, "You must specified :url in the parameters")
+          lambda { @backtype.comments_stats_by_page }.should raise_error(Backtype::MissingParameters, "You must specified :url in the parameters")
         end
       end
     end
     describe 'namespece Tweets' do
-      describe "tweetcount" do
-        it "should call tweetcount with the given params" do
+      describe "stats_by_url" do
+        it "should call stats_by_url with the given params" do
           q = "http://reddit.com"
           @backtype.should_receive(:make_request).with("tweetcount", :q => q)
-          @backtype.tweetcount :q => q
+          @backtype.stats_by_url :q => q
         end
 
         it "should raise MissingParameters when the required parameters are not given" do
-          lambda { @backtype.tweetcount }.should raise_error(Backtype::MissingParameters, "You must specified :q in the parameters")
+          lambda { @backtype.stats_by_url }.should raise_error(Backtype::MissingParameters, "You must specified :q in the parameters")
         end
       end
     end

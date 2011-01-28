@@ -31,17 +31,17 @@ module Backtype
       make_request "comments/connect/stats", params
     end
 
-    def post_comments(params = {})
+    def comments_by_page(params = {})
       check_params params, [:url]
       make_request "post/comments",  params
     end
 
-    def post_stats(params = {})
+    def comments_stats_by_page(params = {})
       check_params params, [:url]
       make_request "post/stats",  params
     end
 
-    def tweetcount(params = {})
+    def stats_by_url(params = {})
       check_params params, [:q]
       make_request "tweetcount", params
     end
