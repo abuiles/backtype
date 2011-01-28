@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'httparty'
-require 'ruby-debug'
 
 module Backtype
   BASE_URL = "http://api.backtype.com/"
@@ -13,53 +12,58 @@ module Backtype
     end
 
     def comments_search(params = {})
-      raise_no_params params
       make_request "comments/search",  params
     end
 
+    def comments_by_author_url(params = {})
+      raise "Parameter url is necessary" unless params.has_key?(url)
+      make_request "url/#{params[:url]}/comments",  params
+    end
+
     def connect(params = {})
-      raise_no_params params
+      make_request "connect",  params
+    end
+
+    def connect_stats(params = {})
+      make_request "comments/connect/stats", params
     end
 
     def post_comments(params = {})
-      raise_no_params params
+      make_request "post/comments",  params
     end
 
     def post_stats(params = {})
-      raise_no_params params
+      make_request "post/stats",  params
     end
 
     def tweetcount(params = {})
-      raise_no_params params
+      make_request "tweetcount"
     end
 
     def user_influencer_score(params = {})
-      raise_no_params params
+      make_request "user/influencer_score", params
     end
 
     def user_top_sites(params = {})
-      raise_no_params params
+      make_request "user/top_sites", params
     end
 
     def user_influenced_by(params = {})
-      raise_no_params params
+      make_request "user/influenced_by", params
     end
 
     def user_influencer_of(params = {})
-      raise_no_params params
+      make_request "user/influencer_of", params
     end
 
     private
 
-    def raise_no_params(params)
-      raise NotParametersGiven if params.empty?
-    end
-
     def make_request(service, params)
-      format = params.delete(:format) || DEFAULT_FORMAT
-      uri    = "#{BASE_URL}#{service}.#{format}"
-      q      = params.merge({:key => @api_key })
-      request = HTTParty::Request.new(Net::HTTP::Get, uri, :query => q)
+      raise NotParametersGiven if params.empty?
+      q        = params.merge({:key => @api_key })
+      format   = params.delete(:format) || DEFAULT_FORMAT
+      uri      = "#{BASE_URL}#{service}.#{format}"
+      request  = HTTParty::Request.new(Net::HTTP::Get, uri, :query => q)
       response = request.perform
       response.parsed_response
     end
