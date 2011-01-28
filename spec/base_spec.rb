@@ -1,67 +1,111 @@
 require 'spec_helper'
 
 describe Backtype::Base do
-  API_METHODS = [:comments_search, :connect, :connect_stats, :post_comments,
+  API_METHODS = [:comments_search, :comments_by_author_url, :connect, :connect_stats, :post_comments,
                  :post_stats, :tweetcount, :user_influencer_score,
                  :user_top_sites, :user_influenced_by, :user_influencer_of]
 
-  describe "public method" do
-
-    API_METHODS.each do |method|
-      it "should define #{method}" do
-        Backtype::Base.public_method_defined?(method).should be(true)
-      end
-
-      it "should raise the NotParametersGiven exception if not parameters are given" do
-        lambda{ Backtype::Base.new(:api_key => '123').send(method)}.should
-        raise_error(Backtype::NotParametersGiven, "You must pass the required parameters")
-      end
+  API_METHODS.each do |method|
+    it "should define #{method}" do
+      Backtype::Base.public_method_defined?(method).should be(true)
     end
 
-    describe "comments_search" do
+    it "should raise the NotParametersGiven exception if not parameters are given" do
+      lambda{ Backtype::Base.new(:api_key => '123').send(method)}.should
+      raise_error(Backtype::NotParametersGiven, "You must pass the required parameters")
+    end
+  end
+
+  describe "public methods" do
+    before(:each) do
+      key = "98456ddaa49832s99907"
+      @backtype = Backtype::Base.new(:api_key => key)
+      @backtype.stub!(:make_request).and_return(true)
+    end
+
+    describe "namespace Comments" do
       before(:each) do
-        key = "98456ddaa49832s99907"
-        @backtype = Backtype::Base.new(:api_key => key)
+        @q   = "brainfuck AND esoteric"
+        @url = "http://reddit.com"
       end
-      use_vcr_cassette "backtype/comment_search", :record => :new_episodes
 
-      it "should call the the comments_search API" do
-        q = "brainfuck AND esoteric"
-        response = @backtype.comments_search :q => "brainfuck AND esoteric"
-        response["totalresults"].should == "9"
+      describe "#comments_by_author_url" do
+        it "should call /url/url/comments with the given params" do
+          @backtype.should_receive(:make_request).with("url/#{@url}/comments", :url => @url)
+          @backtype.comments_by_author_url :url => @url
+        end
+      end
+
+      describe "#comments_search" do
+        it "should call the comments/search with the given params" do
+          @backtype.should_receive(:make_request).with("comments/search", :q => @q)
+          @backtype.comments_search :q => @q
+        end
+      end
+
+      describe "#connect" do
+        it "should call connect with the given params" do
+          @backtype.should_receive(:make_request).with("connect", :url => @url)
+          @backtype.connect :url => @url
+        end
+      end
+
+      describe "#post_comments" do
+        it "should call post/comments with the given params" do
+          @backtype.should_receive(:make_request).with("post/comments", :url => @url)
+          @backtype.post_comments :url => @url
+        end
+      end
+
+      describe "#post_stats" do
+        it "should call post/starts with the given params" do
+          @backtype.should_receive(:make_request).with("post/comments", :url => @url)
+          @backtype.post_comments :url => @url
+        end
+      end
+    end
+    describe 'namespece Tweets' do
+      describe "tweetcount" do
+        it "should call tweetcount with the given params" do
+          q = "http://reddit.com"
+          @backtype.should_receive(:make_request).with("tweetcount", :q => q)
+          @backtype.tweetcount :q => q
+        end
       end
     end
 
-    describe "connect" do
-      pending
-    end
+    describe "Users" do
+      before(:each) do
+        @user_name = "abuiles"
+      end
 
-    describe "post_comments" do
-      pending
-    end
+      describe "user_influencer_score" do
+        it "should call user/influencer_score with the given params" do
+          @backtype.should_receive(:make_request).with("user/influencer_score", :user_name => @user_name)
+          @backtype.user_influencer_score :user_name => @user_name
+        end
+      end
 
-    describe "post_stats" do
-      pending
-    end
+      describe "user_top_sites" do
+        it "should call user/top_sites with the given params" do
+          @backtype.should_receive(:make_request).with("user/top_sites", :user_name => @user_name)
+          @backtype.user_top_sites :user_name => @user_name
+        end
+      end
 
-    describe "tweetcount" do
-      pending
-    end
+      describe "user_influenced_by" do
+        it "should call user/influenced_by with the given params" do
+          @backtype.should_receive(:make_request).with("user/influenced_by", :user_name => @user_name)
+          @backtype.user_influenced_by :user_name => @user_name
+        end
+      end
 
-    describe "user_influencer_score" do
-      pending
-    end
-
-    describe "user_top_sites" do
-      pending
-    end
-
-    describe "user_influenced_by" do
-      pending
-    end
-
-    describe "user_influencer_of" do
-      pending
+      describe "user_influencer_of" do
+        it "should call user/influencer_of with the given params" do
+          @backtype.should_receive(:make_request).with("user/influencer_of", :user_name => @user_name)
+          @backtype.user_influencer_of :user_name => @user_name
+        end
+      end
     end
   end
 

@@ -16,7 +16,7 @@ module Backtype
     end
 
     def comments_by_author_url(params = {})
-      raise "Parameter url is necessary" unless params.has_key?(url)
+      raise "Parameter url is necessary" unless params.has_key?(:url)
       make_request "url/#{params[:url]}/comments",  params
     end
 
