@@ -17,10 +17,10 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("vcr", ">= 1.5.1")
   spec.add_dependency("httparty", ">= 0.7.3")
 
-  s.description       = <<desc
+  spec.description  = <<desc
     require 'backtype'
 
     backtype = Backtype::Base.new(:api_key => 'your_api_key')
     backtype.comments_by_page :url => 'http://www.reddit.com/r/science/comments/8zf9d/holy_crap_i_never_realized_i_was_peeling_a_banana/'
-  desc
+desc
 end
