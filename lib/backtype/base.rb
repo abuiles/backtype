@@ -12,51 +12,67 @@ module Backtype
     end
 
     def comments_search(params = {})
+      check_params params, [:q]
       make_request "comments/search",  params
     end
 
     def comments_by_author_url(params = {})
-      raise "Parameter url is necessary" unless params.has_key?(:url)
+      check_params params, [:url]
       make_request "url/#{params[:url]}/comments",  params
     end
 
     def connect(params = {})
+      check_params params, [:url]
       make_request "connect",  params
     end
 
     def connect_stats(params = {})
+      check_params params, [:url]
       make_request "comments/connect/stats", params
     end
 
     def post_comments(params = {})
+      check_params params, [:url]
       make_request "post/comments",  params
     end
 
     def post_stats(params = {})
+      check_params params, [:url]
       make_request "post/stats",  params
     end
 
     def tweetcount(params = {})
+      check_params params, [:q]
       make_request "tweetcount", params
     end
 
     def user_influencer_score(params = {})
+      check_params params, [:user_name]
       make_request "user/influencer_score", params
     end
 
     def user_top_sites(params = {})
+      check_params params, [:user_name]
       make_request "user/top_sites", params
     end
 
     def user_influenced_by(params = {})
+      check_params params, [:user_name]
       make_request "user/influenced_by", params
     end
 
     def  user_influencer_of(params = {})
+      check_params params, [:user_name]
       make_request "user/influencer_of", params
     end
 
     private
+    def check_params (params = {}, required_keys = [])
+      required_keys.each do |key|
+        message = "You must specified :#{key} in the parameters"
+        raise MissingParameters.new(message) unless params.has_key?(key)
+      end
+    end
 
     def make_request(service, params)
       raise NotParametersGiven if params.empty?

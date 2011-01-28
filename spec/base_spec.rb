@@ -9,11 +9,6 @@ describe Backtype::Base do
     it "should define #{method}" do
       Backtype::Base.public_method_defined?(method).should be(true)
     end
-
-    it "should raise the NotParametersGiven exception if not parameters are given" do
-      lambda{ Backtype::Base.new(:api_key => '123').send(method)}.should
-      raise_error(Backtype::NotParametersGiven, "You must pass the required parameters")
-    end
   end
 
   describe "public methods" do
@@ -34,12 +29,20 @@ describe Backtype::Base do
           @backtype.should_receive(:make_request).with("url/#{@url}/comments", :url => @url)
           @backtype.comments_by_author_url :url => @url
         end
+
+        it "should raise MissingParameters when the required parameters are not given" do
+          lambda { @backtype.comments_by_author_url }.should raise_error(Backtype::MissingParameters, "You must specified :url in the parameters")
+        end
       end
 
       describe "#comments_search" do
         it "should call the comments/search with the given params" do
           @backtype.should_receive(:make_request).with("comments/search", :q => @q)
           @backtype.comments_search :q => @q
+        end
+
+        it "should raise MissingParameters when the required parameters are not given" do
+          lambda { @backtype.comments_search }.should raise_error(Backtype::MissingParameters, "You must specified :q in the parameters")
         end
       end
 
@@ -48,6 +51,10 @@ describe Backtype::Base do
           @backtype.should_receive(:make_request).with("connect", :url => @url)
           @backtype.connect :url => @url
         end
+
+        it "should raise MissingParameters when the required parameters are not given" do
+          lambda { @backtype.connect }.should raise_error(Backtype::MissingParameters, "You must specified :url in the parameters")
+        end
       end
 
       describe "#post_comments" do
@@ -55,12 +62,20 @@ describe Backtype::Base do
           @backtype.should_receive(:make_request).with("post/comments", :url => @url)
           @backtype.post_comments :url => @url
         end
+
+        it "should raise MissingParameters when the required parameters are not given" do
+          lambda { @backtype.post_comments }.should raise_error(Backtype::MissingParameters, "You must specified :url in the parameters")
+        end
       end
 
       describe "#post_stats" do
-        it "should call post/starts with the given params" do
-          @backtype.should_receive(:make_request).with("post/comments", :url => @url)
-          @backtype.post_comments :url => @url
+        it "should call post/stats with the given params" do
+          @backtype.should_receive(:make_request).with("post/stats", :url => @url)
+          @backtype.post_stats :url => @url
+        end
+
+        it "should raise MissingParameters when the required parameters are not given" do
+          lambda { @backtype.post_stats }.should raise_error(Backtype::MissingParameters, "You must specified :url in the parameters")
         end
       end
     end
@@ -70,6 +85,10 @@ describe Backtype::Base do
           q = "http://reddit.com"
           @backtype.should_receive(:make_request).with("tweetcount", :q => q)
           @backtype.tweetcount :q => q
+        end
+
+        it "should raise MissingParameters when the required parameters are not given" do
+          lambda { @backtype.tweetcount }.should raise_error(Backtype::MissingParameters, "You must specified :q in the parameters")
         end
       end
     end
@@ -84,12 +103,20 @@ describe Backtype::Base do
           @backtype.should_receive(:make_request).with("user/influencer_score", :user_name => @user_name)
           @backtype.user_influencer_score :user_name => @user_name
         end
+
+        it "should raise MissingParameters when the required parameters are not given" do
+          lambda { @backtype.user_influencer_score }.should raise_error(Backtype::MissingParameters, "You must specified :user_name in the parameters")
+        end
       end
 
       describe "user_top_sites" do
         it "should call user/top_sites with the given params" do
           @backtype.should_receive(:make_request).with("user/top_sites", :user_name => @user_name)
           @backtype.user_top_sites :user_name => @user_name
+        end
+
+        it "should raise MissingParameters when the required parameters are not given" do
+          lambda { @backtype.user_top_sites }.should raise_error(Backtype::MissingParameters, "You must specified :user_name in the parameters")
         end
       end
 
@@ -98,12 +125,20 @@ describe Backtype::Base do
           @backtype.should_receive(:make_request).with("user/influenced_by", :user_name => @user_name)
           @backtype.user_influenced_by :user_name => @user_name
         end
+
+        it "should raise MissingParameters when the required parameters are not given" do
+          lambda { @backtype.user_influenced_by }.should raise_error(Backtype::MissingParameters, "You must specified :user_name in the parameters")
+        end
       end
 
       describe "user_influencer_of" do
         it "should call user/influencer_of with the given params" do
           @backtype.should_receive(:make_request).with("user/influencer_of", :user_name => @user_name)
           @backtype.user_influencer_of :user_name => @user_name
+        end
+
+        it "should raise MissingParameters when the required parameters are not given" do
+          lambda { @backtype.user_influencer_of }.should raise_error(Backtype::MissingParameters, "You must specified :user_name in the parameters")
         end
       end
     end
