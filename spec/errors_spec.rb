@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Backtype do
-  ERRORS = ["NotAPIKeyGiven", "NotParametersGiven"]
+  ERRORS = ["NotAPIKeyGiven", "MissingParameters"]
 
   ERRORS.each do |error|
     it "should define error #{error}" do
