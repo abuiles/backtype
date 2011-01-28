@@ -37,7 +37,7 @@ module Backtype
     end
 
     def tweetcount(params = {})
-      make_request "tweetcount"
+      make_request "tweetcount", params
     end
 
     def user_influencer_score(params = {})
@@ -52,7 +52,7 @@ module Backtype
       make_request "user/influenced_by", params
     end
 
-    def user_influencer_of(params = {})
+    def  user_influencer_of(params = {})
       make_request "user/influencer_of", params
     end
 
