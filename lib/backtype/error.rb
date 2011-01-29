@@ -1,8 +1,8 @@
 module Backtype
   ERRORS = {
-    :api_key   => {:klass_name => "NotAPIKeyGiven",
-                   :message => "You must pass an api_key as parameter" },
-    :missing_param => {:klass_name => "MissingParameters"}
+    :api_key       => {:klass_name => "NotAPIKeyGiven",
+                       :message => "You must pass an api_key as parameter"},
+    :missing_params => {:klass_name => "MissingParameters"}
   }
 
   ERRORS.each_value do |error|

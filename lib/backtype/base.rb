@@ -75,7 +75,6 @@ module Backtype
     end
 
     def make_request(service, params)
-      raise NotParametersGiven if params.empty?
       q        = params.merge({:key => @api_key })
       format   = params.delete(:format) || DEFAULT_FORMAT
       uri      = "#{BASE_URL}#{service}.#{format}"
