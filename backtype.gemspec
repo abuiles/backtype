@@ -1,4 +1,5 @@
 $LOAD_PATH.unshift 'lib'
+require 'backtype/version'
 
 Gem::Specification.new do |spec|
   spec.authors     = [ "Adolfo Builes" ]
@@ -8,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.has_rdoc    = false
   spec.homepage    = "http://github.com/abuiles/backtype"
   spec.name        = "backtype"
+  spec.version     = Backtype::VERSION
   spec.summary     = %q{See example: https://github.com/abuiles/backtype/blob/master/README.markdown}
-  spec.version     = "0.0.1.2"
 
   spec.files  = %w( README.markdown Rakefile LICENSE )
   spec.files += Dir.glob("lib/**/*")
