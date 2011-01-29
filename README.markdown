@@ -7,7 +7,8 @@ This is a simple Ruby gem wrapper for their API.
 
 Note that this wrapper doesn't work for the services in beta or paid.
 
-== SYNOPSIS:
+Synopsis
+========
 
 Install from RubyGems
         gem install backtype
